@@ -8,13 +8,17 @@ const LandingPageHeader = () => (
       className="text-4xl font-bold tracking-tighter sm:text-5xl"
       tw="text-7xl font-black pt-[100px]"
     >
-      zound wrapped.
+      basic relay bridge.
     </p>
     <p
       className="max-w-[600px] text-md md:text-xl font-bold"
       tw="max-w-[600px] text-4xl font-bold mt-[-25]"
     >
-      search any creator.
+      instantly bridge ETH using{' '}
+      <a href="https://www.relay.link/" target="_blank" rel="noopener noreferrer">
+        relay
+      </a>
+      .
     </p>
   </div>
 );
