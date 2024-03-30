@@ -1,4 +1,4 @@
-# simple bridge
+# basic bridge
 
 bridge ETH instantly with relay.link
 
