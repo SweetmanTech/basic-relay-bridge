@@ -9,7 +9,7 @@ export default function PrivyProvider({ children }: { children: React.ReactNode 
       config={{
         appearance: {
           theme: 'light',
-          accentColor: '#676FFF',
+          accentColor: '#ff5700',
           logo: '/images/zorb.png',
         },
         embeddedWallets: {

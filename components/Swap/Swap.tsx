@@ -1,15 +1,11 @@
 import Button from '../Button';
-import Input from '../Input';
 import { Card } from '../Card/Card';
 import ArrowDownIcon from './ArrowDownIcon';
-import SourceChain from './SourceChain';
-import SwapHeader from './SwapHeader';
 import SourceCard from './SourceCard';
 
 const Swap = () => {
   return (
     <div className="max-w-md mx-auto mt-10 space-y-8">
-      <SwapHeader />
       <SourceCard />
       <ArrowDownIcon className="text-orange-600 mx-auto" />
       <Card className="p-6 space-y-4">
