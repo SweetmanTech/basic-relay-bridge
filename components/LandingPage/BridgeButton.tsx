@@ -1,3 +1,5 @@
+'use client';
+
 import Button from '../Button';
 import PendingTxModal from '../PendingTxModal';
 import useRelayBridge from '@/hooks/useRelayBridge';

@@ -1,3 +1,5 @@
+'use client';
+
 import { usePrivy } from '@privy-io/react-auth';
 import { toast } from 'react-toastify';
 
