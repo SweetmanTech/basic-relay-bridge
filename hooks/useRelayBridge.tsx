@@ -1,9 +1,9 @@
-import { baseSepolia, zoraSepolia } from 'viem/chains';
+import { baseSepolia } from 'viem/chains';
 import usePrivyWalletClient from './usePrivyWalletClient';
 import { WalletClient } from 'viem';
 import relayBridge from '@/lib/relay/relayBridge';
 import useConnectedWallet from './useConnectedWallet';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import getSolverCapacity from '@/lib/relay/getSolverCapacity';
 import { toast } from 'react-toastify';
 import {
@@ -12,7 +12,6 @@ import {
   createClient,
 } from '@reservoir0x/relay-sdk';
 import getViemNetwork from '@/lib/clients/getViemNetwork';
-import { SOURCE_CHAINS } from '@/lib/consts';
 import { useBridgeProvider } from '@/providers/BridgeProvider';
 
 const useRelayBridge = () => {
@@ -22,7 +21,7 @@ const useRelayBridge = () => {
   const { walletClient } = usePrivyWalletClient(activeChain);
   const wallet = walletClient as WalletClient;
   const toChainId = baseSepolia.id;
-  const { setSourceTx, setDestinationTx } = useBridgeProvider();
+  const { setSourceTx, setDestinationTx } = useBridgeProvider() as any;
 
   const handleProgress = (steps: any, fees: any, currentStep: any, currentStepItem: any) => {
     const transaction = currentStepItem?.items?.[0]?.txHashes?.[0];
@@ -57,7 +56,6 @@ const useRelayBridge = () => {
 
   const bridge = async (bridgeValue: string) => {
     const isPrepared = await prepareBridge();
-
     if (!isPrepared) return;
     await relayBridge({
       wallet,

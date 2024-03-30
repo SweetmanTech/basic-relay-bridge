@@ -3,7 +3,7 @@ import Input from '../Input';
 import { parseEther } from 'viem';
 
 const SourceInput = () => {
-  const { setBridgeAmount } = useBridgeProvider();
+  const { setBridgeAmount } = useBridgeProvider() as any;
 
   const handleChange = (e: any) => {
     const newValue = e.target.value;
