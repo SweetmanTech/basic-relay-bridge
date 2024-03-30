@@ -1,9 +1,11 @@
 import Image from 'next/image';
 import ChainInfo from './ChainInfo';
-import { baseSepolia, sepolia } from 'viem/chains';
+import { useBridgeProvider } from '@/providers/BridgeProvider';
+import getViemNetwork from '@/lib/clients/getViemNetwork';
 
-const PendingTxModal = ({ destinationTxHash, sourceTxHash }: any) => {
+const PendingTxModal = () => {
   const size = 50;
+  const { sourceTx, destinationTx } = useBridgeProvider() as any;
 
   return (
     <div className="flex items-center justify-center px-4 text-center fixed inset-0 bg-black bg-opacity-50 z-50">
@@ -13,13 +15,23 @@ const PendingTxModal = ({ destinationTxHash, sourceTxHash }: any) => {
         <div className="flex-grow flex items-center justify-center">
           <div className="w-full rounded-lg p-4">
             <div className="flex w-full justify-around items-center">
-              <ChainInfo title="from" size={size} chain={baseSepolia} txHash={sourceTxHash} />
-              {destinationTxHash ? (
+              <ChainInfo
+                title="from"
+                size={size}
+                chain={getViemNetwork(sourceTx?.chainId)}
+                txHash={sourceTx?.txHash}
+              />
+              {destinationTx?.txHash ? (
                 <Image src="/images/success.gif" width={3 * size} height={size} alt="arrow" />
               ) : (
                 <Image src="/images/bridging.gif" width={3 * size} height={size} alt="arrow" />
               )}
-              <ChainInfo title="to" size={size} chain={sepolia} txHash={destinationTxHash} />
+              <ChainInfo
+                title="to"
+                size={size}
+                chain={getViemNetwork(destinationTx?.chainId)}
+                txHash={destinationTx?.txHash}
+              />
             </div>
           </div>
         </div>
