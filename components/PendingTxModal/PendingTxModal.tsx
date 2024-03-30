@@ -7,8 +7,6 @@ import getViemNetwork from '@/lib/clients/getViemNetwork';
 const PendingTxModal = () => {
   const size = 50;
   const { sourceTx, destinationTx } = useBridgeProvider();
-  console.log('SWEETS sourceTx', sourceTx);
-  console.log('SWEETS destinationTx', destinationTx);
 
   return (
     <div className="flex items-center justify-center px-4 text-center fixed inset-0 bg-black bg-opacity-50 z-50">
