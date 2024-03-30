@@ -5,14 +5,35 @@ import getSolverCapacity from '@/lib/relay/getSolverCapacity';
 import { usePrivy } from '@privy-io/react-auth';
 import usePrivyWalletClient from '@/hooks/usePrivyWalletClient';
 import useConnectedWallet from '@/hooks/useConnectedWallet';
-import { Execute, getClient } from '@reservoir0x/relay-sdk';
+import { getClient } from '@reservoir0x/relay-sdk';
 import { WalletClient } from 'viem';
+import PendingTxModal from '../PendingTxModal';
+import { useState } from 'react';
 
 const BridgeButton = () => {
   const { ready, authenticated, login } = usePrivy();
   const { connectedWallet } = useConnectedWallet();
   const { walletClient } = usePrivyWalletClient(baseSepolia);
   const disableLogin = ready && authenticated;
+  const [sourceTxHash, setSourceTxHash] = useState<string | null>(null);
+  const [destinationTxHash, setDestinationTxHash] = useState<string | null>(null);
+
+  const handleProgress = (steps, fees, currentStep, currentStepItem) => {
+    // console.log('SWEETS PROGRESS', steps, fees, currentStep, currentStepItem);
+    const transaction = currentStepItem?.items?.[0]?.txHashes?.[0];
+    const txChainId = transaction?.chainId;
+    const txHash = transaction?.txHash;
+    console.log('SWEETS currentStepItem', currentStepItem);
+    console.log('SWEETS txHash', txHash);
+    console.log('SWEETS txChainId', txChainId);
+    if (!txHash) return;
+    if (txChainId === sepolia.id) {
+      setDestinationTxHash(txHash);
+    }
+    if (txChainId === baseSepolia.id) {
+      setSourceTxHash(txHash);
+    }
+  };
 
   const handleClick = async () => {
     if (!disableLogin) {
@@ -61,12 +82,17 @@ const BridgeButton = () => {
       amount: bridgeValue,
       currency: 'eth',
       recipient: connectedWallet,
-      onProgress: (steps, fees, currentStep, currentStepItem) => {
-        console.log('SWEETS', steps, fees, currentStep, currentStepItem);
-      },
+      onProgress: handleProgress,
     });
   };
-  return <Button onClick={handleClick}>Send</Button>;
+  return (
+    <div>
+      <Button onClick={handleClick}>Send</Button>
+      {sourceTxHash && (
+        <PendingTxModal sourceTxHash={sourceTxHash} destinationTxHash={destinationTxHash} />
+      )}
+    </div>
+  );
 };
 
 export default BridgeButton;
