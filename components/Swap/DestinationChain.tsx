@@ -8,7 +8,6 @@ const DestinationChain = () => {
   const { destinationChain, setDestinationChain } = useBridgeProvider() as any;
 
   const handleSelectChange = async (selectedOption: string) => {
-    console.log('SWEETS CHANGES DESTINATION', selectedOption);
     setDestinationChain(getViemNetwork(parseInt(selectedOption, 10)));
   };
 
