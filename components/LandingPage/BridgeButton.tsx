@@ -7,7 +7,7 @@ import { useBridgeProvider } from '@/providers/BridgeProvider';
 const BridgeButton = () => {
   const { prepare } = usePrepareWallet();
   const { bridge } = useRelayBridge();
-  const { bridgeAmount, sourceTx } = useBridgeProvider();
+  const { bridgeAmount, sourceTx } = useBridgeProvider() as any;
   const handleClick = async () => {
     if (!prepare()) return;
     await bridge((bridgeAmount as bigint).toString());
@@ -16,7 +16,7 @@ const BridgeButton = () => {
   return (
     <div>
       <Button onClick={handleClick}>Send</Button>
-      {sourceTx && <PendingTxModal />}
+      {sourceTx?.txHash && <PendingTxModal />}
     </div>
   );
 };
