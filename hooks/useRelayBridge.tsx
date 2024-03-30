@@ -25,9 +25,6 @@ const useRelayBridge = () => {
     const transaction = currentStepItem?.items?.[0]?.txHashes?.[0];
     const txChainId = transaction?.chainId;
     const txHash = transaction?.txHash;
-    console.log('SWEETS currentStepItem', currentStepItem);
-    console.log('SWEETS txHash', txHash);
-    console.log('SWEETS txChainId', txChainId);
     if (!txHash) return;
     if (txChainId === sepolia.id) {
       setDestinationTxHash(txHash);

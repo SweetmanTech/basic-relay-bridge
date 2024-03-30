@@ -5,7 +5,7 @@ import { baseSepolia } from 'viem/chains';
 const ChainInfo = ({ size, title = 'from', chain = baseSepolia, txHash = null }: any) => {
   const blockExplorer = chain.blockExplorers.default.url;
   const linkToTx = `${blockExplorer}/tx/${txHash}`;
-  console.log('SWEETS CHAIN', chain);
+
   return (
     <div className="flex flex-col gap-2">
       <Image
