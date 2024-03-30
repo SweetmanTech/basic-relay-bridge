@@ -18,8 +18,7 @@ const BridgeButton = () => {
   const [sourceTxHash, setSourceTxHash] = useState<string | null>(null);
   const [destinationTxHash, setDestinationTxHash] = useState<string | null>(null);
 
-  const handleProgress = (steps, fees, currentStep, currentStepItem) => {
-    // console.log('SWEETS PROGRESS', steps, fees, currentStep, currentStepItem);
+  const handleProgress = (steps: any, fees: any, currentStep: any, currentStepItem: any) => {
     const transaction = currentStepItem?.items?.[0]?.txHashes?.[0];
     const txChainId = transaction?.chainId;
     const txHash = transaction?.txHash;
