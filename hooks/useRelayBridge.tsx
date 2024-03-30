@@ -1,4 +1,4 @@
-import { baseSepolia, sepolia } from 'viem/chains';
+import { baseSepolia, zoraSepolia } from 'viem/chains';
 import usePrivyWalletClient from './usePrivyWalletClient';
 import { WalletClient } from 'viem';
 import relayBridge from '@/lib/relay/relayBridge';
@@ -11,33 +11,40 @@ import {
   convertViemChainToRelayChain,
   createClient,
 } from '@reservoir0x/relay-sdk';
+import getViemNetwork from '@/lib/clients/getViemNetwork';
+import { SOURCE_CHAINS } from '@/lib/consts';
+import { useBridgeProvider } from '@/providers/BridgeProvider';
 
 const useRelayBridge = () => {
-  const { walletClient } = usePrivyWalletClient(baseSepolia);
-  const { connectedWallet } = useConnectedWallet();
+  const { connectedWallet, wallet: privyWallet } = useConnectedWallet();
+  const chainId = parseInt(privyWallet?.chainId?.split?.(':')[1] || '1', 10);
+  const activeChain = getViemNetwork(chainId);
+  const { walletClient } = usePrivyWalletClient(activeChain);
   const wallet = walletClient as WalletClient;
-  const chainId = baseSepolia.id;
-  const toChainId = sepolia.id;
-  const [sourceTxHash, setSourceTxHash] = useState<string | null>(null);
-  const [destinationTxHash, setDestinationTxHash] = useState<string | null>(null);
+  const toChainId = baseSepolia.id;
+  const { setSourceTx, setDestinationTx } = useBridgeProvider();
 
   const handleProgress = (steps: any, fees: any, currentStep: any, currentStepItem: any) => {
     const transaction = currentStepItem?.items?.[0]?.txHashes?.[0];
     const txChainId = transaction?.chainId;
     const txHash = transaction?.txHash;
     if (!txHash) return;
-    if (txChainId === sepolia.id) {
-      setDestinationTxHash(txHash);
+    if (txChainId === toChainId) {
+      setDestinationTx({
+        chainId: toChainId,
+        txHash,
+      });
     }
-    if (txChainId === baseSepolia.id) {
-      setSourceTxHash(txHash);
+    if (txChainId === chainId) {
+      setSourceTx({ txHash, chainId });
+      setDestinationTx({ chainId: toChainId });
     }
   };
 
   const prepareBridge = async () => {
     const { enabled } = await getSolverCapacity({
-      originChainId: baseSepolia.id,
-      destinationChainId: sepolia.id,
+      originChainId: chainId,
+      destinationChainId: toChainId,
     });
 
     if (!enabled) {
@@ -64,13 +71,14 @@ const useRelayBridge = () => {
   };
 
   useEffect(() => {
+    const chains = [convertViemChainToRelayChain(activeChain)];
     createClient({
       baseApiUrl: TESTNET_RELAY_API,
-      chains: [convertViemChainToRelayChain(baseSepolia)],
+      chains,
     });
-  }, []);
+  }, [privyWallet]);
 
-  return { bridge, sourceTxHash, destinationTxHash };
+  return { bridge };
 };
 
 export default useRelayBridge;
