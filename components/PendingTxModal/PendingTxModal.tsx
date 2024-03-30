@@ -1,12 +1,11 @@
 import Image from 'next/image';
 import ChainInfo from './ChainInfo';
-import { baseSepolia, sepolia } from 'viem/chains';
 import { useBridgeProvider } from '@/providers/BridgeProvider';
 import getViemNetwork from '@/lib/clients/getViemNetwork';
 
 const PendingTxModal = () => {
   const size = 50;
-  const { sourceTx, destinationTx } = useBridgeProvider();
+  const { sourceTx, destinationTx } = useBridgeProvider() as any;
 
   return (
     <div className="flex items-center justify-center px-4 text-center fixed inset-0 bg-black bg-opacity-50 z-50">

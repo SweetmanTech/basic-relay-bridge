@@ -4,8 +4,8 @@ const BridgeContext = createContext(null);
 
 const BridgeProvider = ({ children }: any) => {
   const [bridgeAmount, setBridgeAmount] = useState<bigint>(0n);
-  const [sourceTx, setSourceTx] = useState<any>();
-  const [destinationTx, setDestinationTx] = useState<any>();
+  const [sourceTx, setSourceTx] = useState<any>({});
+  const [destinationTx, setDestinationTx] = useState<any>({});
 
   const value = useMemo(
     () => ({
