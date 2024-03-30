@@ -1,12 +1,17 @@
 import Button from '../Button';
-import { getClient } from '@reservoir0x/relay-sdk';
 import { baseSepolia, sepolia } from 'viem/chains';
 import { toast } from 'react-toastify';
 import getSolverCapacity from '@/lib/relay/getSolverCapacity';
 import { usePrivy } from '@privy-io/react-auth';
+import usePrivyWalletClient from '@/hooks/usePrivyWalletClient';
+import useConnectedWallet from '@/hooks/useConnectedWallet';
+import { Execute, getClient } from '@reservoir0x/relay-sdk';
+import { WalletClient } from 'viem';
 
 const BridgeButton = () => {
   const { ready, authenticated, login } = usePrivy();
+  const { connectedWallet } = useConnectedWallet();
+  const { walletClient } = usePrivyWalletClient(baseSepolia);
   const disableLogin = ready && authenticated;
 
   const handleClick = async () => {
@@ -26,14 +31,40 @@ const BridgeButton = () => {
       );
     }
 
-    // const quote = await getClient()?.methods.getBridgeQuote({
-    //   wallet,
-    //   chainId: 1, // The chain id to bridge from
-    //   toChainId: 7777777, // The chain id to bridge to
-    //   amount: '100000000000000000', // Amount in wei to bridge
-    //   currency: 'eth', // `eth` | `usdc`
-    //   recipient, // A valid address to send the funds to
-    // });
+    console.log('SWEETS walletClient', walletClient);
+
+    const bridgeValue = '1000000000000000';
+    const wallet = walletClient as WalletClient;
+    const chainId = baseSepolia.id;
+    const toChainId = sepolia.id;
+    const quote = (await getClient()?.methods.getBridgeQuote({
+      wallet,
+      chainId,
+      toChainId,
+      amount: bridgeValue, // Amount in wei to bridge
+      currency: 'eth',
+      recipient: connectedWallet, // A valid address to send the funds to
+    })) as any;
+
+    const { gas, relayer } = quote.fees;
+    console.log('SWEETS quote', quote);
+    console.log('SWEETS gas', gas);
+    console.log('SWEETS relayer', relayer);
+
+    const totalValue = BigInt(bridgeValue) + BigInt(gas) + BigInt(relayer);
+    console.log('SWEETS totalValue', totalValue);
+
+    await getClient()?.actions.bridge({
+      wallet,
+      chainId,
+      toChainId,
+      amount: bridgeValue,
+      currency: 'eth',
+      recipient: connectedWallet,
+      onProgress: (steps, fees, currentStep, currentStepItem) => {
+        console.log('SWEETS', steps, fees, currentStep, currentStepItem);
+      },
+    });
   };
   return <Button onClick={handleClick}>Send</Button>;
 };
