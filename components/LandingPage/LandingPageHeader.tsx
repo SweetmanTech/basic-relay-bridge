@@ -1,3 +1,5 @@
+import SwapHeader from '../Swap/SwapHeader';
+
 const LandingPageHeader = () => (
   <div
     style={{ display: 'flex' }}
@@ -20,6 +22,7 @@ const LandingPageHeader = () => (
       </a>
       .
     </p>
+    <SwapHeader />
   </div>
 );
 
