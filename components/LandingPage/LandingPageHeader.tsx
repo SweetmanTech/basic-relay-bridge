@@ -10,7 +10,7 @@ const LandingPageHeader = () => (
       className="text-4xl font-bold tracking-tighter sm:text-5xl"
       tw="text-7xl font-black pt-[100px]"
     >
-      easy bridge.
+      basic bridge.
     </p>
     <p
       className="max-w-[600px] text-md md:text-xl font-bold"
