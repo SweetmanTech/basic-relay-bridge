@@ -25,8 +25,6 @@ const useRelayBridge = () => {
     const transaction = currentStepItem?.items?.[0]?.txHashes?.[0];
     const txChainId = transaction?.chainId;
     const txHash = transaction?.txHash;
-    console.log('SWEETS handleProgress', currentStepItem?.items?.[0]);
-
     if (!txHash) return;
     if (txChainId === sepolia.id) {
       setDestinationTxHash(txHash);
@@ -51,9 +49,7 @@ const useRelayBridge = () => {
   };
 
   const bridge = async (bridgeValue: string) => {
-    console.log('SWEETS BRIDGING', bridgeValue);
     const isPrepared = await prepareBridge();
-    console.log('SWEETS isPrepared', isPrepared);
 
     if (!isPrepared) return;
     await relayBridge({
