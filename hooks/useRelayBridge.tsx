@@ -3,9 +3,14 @@ import usePrivyWalletClient from './usePrivyWalletClient';
 import { WalletClient } from 'viem';
 import relayBridge from '@/lib/relay/bridge';
 import useConnectedWallet from './useConnectedWallet';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import getSolverCapacity from '@/lib/relay/getSolverCapacity';
 import { toast } from 'react-toastify';
+import {
+  TESTNET_RELAY_API,
+  convertViemChainToRelayChain,
+  createClient,
+} from '@reservoir0x/relay-sdk';
 
 const useRelayBridge = () => {
   const { walletClient } = usePrivyWalletClient(baseSepolia);
@@ -42,9 +47,8 @@ const useRelayBridge = () => {
       toast.error(
         'Relay not enabled for selected chains. Please select different chains & try again.',
       );
-      return false;
     }
-    return true;
+    return enabled;
   };
 
   const bridge = async (bridgeValue: string) => {
@@ -60,6 +64,13 @@ const useRelayBridge = () => {
       onProgress: handleProgress,
     });
   };
+
+  useEffect(() => {
+    createClient({
+      baseApiUrl: TESTNET_RELAY_API,
+      chains: [convertViemChainToRelayChain(baseSepolia)],
+    });
+  }, []);
 
   return { bridge, sourceTxHash, destinationTxHash };
 };
