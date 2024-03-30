@@ -15,7 +15,7 @@ const LandingPageHeader = () => (
       tw="max-w-[600px] text-4xl font-bold mt-[-25]"
     >
       instantly bridge ETH using{' '}
-      <a href="https://www.relay.link/" target="_blank">
+      <a href="https://www.relay.link/" target="_blank" rel="noopener noreferrer">
         relay
       </a>
       .

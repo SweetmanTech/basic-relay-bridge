@@ -21,6 +21,7 @@ const ChainInfo = ({ size, title = 'from', chain = baseSepolia, txHash = null }:
         <a
           href={linkToTx}
           target="_blank"
+          rel="noopener noreferrer"
           className="text-sm font-medium tracking-wide uppercase dark:text-gray-400"
         >
           tx hash: {shortenTxHash(txHash)}
