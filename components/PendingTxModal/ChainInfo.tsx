@@ -1,3 +1,4 @@
+import getChainIcon from '@/lib/getChainIcon';
 import shortenTxHash from '@/lib/shortenTxHash';
 import Image from 'next/image';
 import { baseSepolia } from 'viem/chains';
@@ -9,7 +10,7 @@ const ChainInfo = ({ size, title = 'from', chain = baseSepolia, txHash = null }:
   return (
     <div className="flex flex-col gap-2">
       <Image
-        src="/images/zorb.png"
+        src={getChainIcon(chain.id)}
         alt={chain.name}
         width={size}
         height={size}

@@ -20,8 +20,9 @@ const useRelayBridge = () => {
   const activeChain = getViemNetwork(chainId);
   const { walletClient } = usePrivyWalletClient(activeChain);
   const wallet = walletClient as WalletClient;
-  const toChainId = baseSepolia.id;
-  const { setSourceTx, setDestinationTx } = useBridgeProvider() as any;
+  const { setSourceTx, setDestinationTx, bridgeAmount, destinationChain } =
+    useBridgeProvider() as any;
+  const toChainId = destinationChain.id;
 
   const handleProgress = (steps: any, fees: any, currentStep: any, currentStepItem: any) => {
     const transaction = currentStepItem?.items?.[0]?.txHashes?.[0];
@@ -54,14 +55,14 @@ const useRelayBridge = () => {
     return enabled;
   };
 
-  const bridge = async (bridgeValue: string) => {
+  const bridge = async () => {
     const isPrepared = await prepareBridge();
     if (!isPrepared) return;
     await relayBridge({
       wallet,
       chainId,
       toChainId,
-      amount: bridgeValue,
+      amount: bridgeAmount.toString(),
       currency: 'eth',
       recipient: connectedWallet,
       onProgress: handleProgress,

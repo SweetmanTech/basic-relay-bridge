@@ -1,13 +1,13 @@
 import { FrameMetadata } from '@coinbase/onchainkit';
-import { VERCEL_URL } from '@/lib/consts';
+import { TITLE, VERCEL_URL } from '@/lib/consts';
 import CollectorPage from '@/components/CollectorPage';
 import getButtons from '@/lib/getButtons';
 
 const Page = ({ params }: { params: { collectorId: string } }) => (
   <>
     <FrameMetadata
-      ogTitle="viem snapshot"
-      ogDescription="viem snapshot"
+      ogTitle={TITLE}
+      ogDescription={TITLE}
       buttons={getButtons(params.collectorId)}
       image={{
         src: `${VERCEL_URL}/api/images/collector/collections?address=${params.collectorId}`,
