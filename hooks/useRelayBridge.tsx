@@ -1,7 +1,7 @@
 import { baseSepolia, sepolia } from 'viem/chains';
 import usePrivyWalletClient from './usePrivyWalletClient';
 import { WalletClient } from 'viem';
-import relayBridge from '@/lib/relay/bridge';
+import relayBridge from '@/lib/relay/relayBridge';
 import useConnectedWallet from './useConnectedWallet';
 import { useEffect, useState } from 'react';
 import getSolverCapacity from '@/lib/relay/getSolverCapacity';

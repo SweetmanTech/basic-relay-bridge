@@ -1,6 +1,7 @@
 import { getClient } from '@reservoir0x/relay-sdk';
 
-const bridge = async ({ wallet, chainId, toChainId, amount, recipient, onProgress }: any) => {
+const relayBridge = async ({ wallet, chainId, toChainId, amount, recipient, onProgress }: any) => {
+  console.log('SWEETS getClient()?.actions.bridge', amount);
   await getClient()?.actions.bridge({
     wallet,
     chainId,
@@ -12,4 +13,4 @@ const bridge = async ({ wallet, chainId, toChainId, amount, recipient, onProgres
   });
 };
 
-export default bridge;
+export default relayBridge;
